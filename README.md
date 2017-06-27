@@ -1,4 +1,9 @@
-# Tax-Deductions
-Program to calculate tax and NI contributions for self employed workers in UK.
+# taxDeductor
+Program to calculate tax and NI contributions for self employed workers in the UK.
 
-I'll be using this program to further develop my programming skills, especially with Python, I consider this version a prototype for a possible GUI version to be written in C#.
+I'm developing this program; initally as a prototype in Python, to enhance my understanding of basic programming concepts and
+Python syntax.
+
+# License
+
+Licensed under the MIT License.
