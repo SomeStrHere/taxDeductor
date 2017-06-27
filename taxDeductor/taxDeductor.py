@@ -54,14 +54,17 @@ if yearlyOrMonthly == "Y" :
     except :
         print('Sorry, there was an error')
 elif yearlyOrMonthly == "M" :
-    preTaxMonthlyIncome =[]
+    preTaxMonthlyIncome = []
     for x in range(0,12):
+        #monthlyIncomeContainer stores the user input and each time through the loops
+        #adds that value to the array preTaxMonthlyIncome[]
+        monthlyIncomeContainer = 0
         try :
-            float(input('Please enter your pre-text value for each month; one at a time: '))
+            monthlyIncomeContainer = float(input('Please enter your pre-text value for each month; one at a time: '))
         except :
             print('Sorry, there was an error')
             break # break is here to exit the loop in the case of an error
-        preTaxMonthlyIncome.append(float(x))
+        preTaxMonthlyIncome.append(monthlyIncomeContainer)
     #First method for summing the array
     #grossIncome = sum(preTaxMonthlyIncome)
     #print('this is a test %.2f' %(grossIncome) ) #this line is just to test the code
@@ -70,7 +73,7 @@ elif yearlyOrMonthly == "M" :
     preTaxMonthlyArrayTotal = 0.0 
     for i in range(len(preTaxMonthlyIncome)):
         preTaxMonthlyArrayTotal += preTaxMonthlyIncome[i]
-    print(preTaxMonthlyArrayTotal)
+    #print(preTaxMonthlyArrayTotal) #This print statement was used in testing.
 else :
     yearlyOrMonthly = input("Error; please enter 'Y' or 'M'...")
 
