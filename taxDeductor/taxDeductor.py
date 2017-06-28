@@ -1,5 +1,7 @@
 #Program to take in input from the user and calculate how much tax and NI contributions a 
 #self employed user would have to pay for that years, based on the users input.
+#
+#This is the first iteration of this program.
 
 #Initialize variables and CONSTANTS
 TAXPERSONALALLOWANCE = 11500 #The standard personal allowance
@@ -39,33 +41,40 @@ CLASS4FIRSTRATE = 0.09 #The value as a percentage which will be used to calc cla
 CLASS4SSECONDRATETHRESHOLD = 45000.01
 CLASS4SECONDRATE = 0.02 #The value as a percentage which will be used to cal class contributions on pre-tax profits above CLASS4SSECONDRATETHRESHOLD
 
+print('\nTax & NI Deductor')
+print('##################')
+print('A program to calculate the tax and NI contributions per year, for a \nself employed person\
+ in the UK.')
+
 #Start user input
-userInput = input("If you want to write something off against your tax, press 'Y', otherwise \
-press the enter key to continue ").upper()
+userInput = input("\nIf you are eligible to increase your tax free allowance,\
+press 'Y',\notherwise press the enter key to continue ").upper()
 
 while userInput == "Y" :
-    taxAdditionalAllowanc = float(input('Please enter the total in value of what you wish to write off against your tax; £'))
+    taxAdditionalAllowanc = float(input('\nPlease enter the total in value, which you want to add\
+to your tax free allowance; £'))
     break
 
 #The purpose of this code block is to allow the user to input either an annual pre-tax earnings
 #figure or to allow the user to enter the amounts for each month. So in future iterations the
 #program can return individual values for each month and do more complex calculations.
-yearlyOrMonthly = input("If you know your pre-tax income for the year press 'Y', to enter values \
-for each month, please press 'M' ").upper()
+yearlyOrMonthly = input("\nIf you know your total pre-tax income for the year press 'Y', to enter\
+ values for each month, please press 'M' ").upper()
 
 if yearlyOrMonthly == "Y" :
     try :
-        grossIncome = float(input('Please enter your annual pre tax income £'))
+        grossIncome = float(input('\nPlease enter your annual pre tax income £'))
     except :
         print('Sorry, there was an error')
 elif yearlyOrMonthly == "M" :
     preTaxMonthlyIncome = []
+    print('') #To create a line of empty space before the loop
     for x in range(0,12):
         #monthlyIncomeContainer stores the user input and each time through the loop
         #adds that value to the array preTaxMonthlyIncome[]
         monthlyIncomeContainer = 0
         try :
-            monthlyIncomeContainer = float(input('Please enter your pre-text value for each month; one at a time: '))
+            monthlyIncomeContainer = float(input('Please enter your pre-tx income for each month; one at a time: '))
         except :
             print('Sorry, there was an error')
             break # break is here to exit the loop in the case of an error
