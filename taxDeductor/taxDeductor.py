@@ -35,14 +35,18 @@ niPayable = 0.00 #total of all National Insurance contributions to be paid, calc
 
 #NI contributions variables and constants
 #see; https://www.gov.uk/self-employed-national-insurance-rates
-#CLASS2NITHRESHOLD = 6025.00
-#CLASS4MAX = 45000.00
-#class4contribution
+CLASS2NITHRESHOLD = 6025.00
+CLASS2NIRATE = 2.85 # per week
+class2NI = 0.00 #amount of class 2 due to pay based on pre-tax profits
+class4NI = 0.00 #amount of class 4 due to pay based on pre-tax profits
+CLASS4NITHRESHOLD = 8164.00
+CLASS4FIRSTRATE = 0.09
+CLASS4SSECONDRATETHRESHOLD = 45000.01
+CLASS4SECONDRATE = 0.02
 
 #Start user input
-
 userInput = input("If you want to write something off against your tax, press 'Y', otherwise \
-press any key to continue ").upper()
+press the enter key to continue ").upper()
 
 while userInput == "Y" :
     taxAdditionalAllowanc = float(input('Please enter the total in value of what you wish to write off against your tax; £'))
@@ -93,13 +97,34 @@ else :
     taxPayable = 0.00
 
 #Calculate NI based on user input
+#You work out your profits by deducting your expenses from your self-employed income.
+#Class 2 payable if your profits are > CLASS2NITHRESHOLD per year
+#Class 2 = £2.85 a week
+
+businessCosts = float(input("\nIf you need to declare any business costs/expenses for us to calculate your\
+ NI contributions, please do so here.\nIf you don't have anything to declare just enter 0:\n\n£"))
+
+preTaxProfits = (grossIncome - businessCosts)
+
+#Calculatte Class 2 contributions
+if preTaxProfits > CLASS2NITHRESHOLD :
+    class2NI = (CLASS2NIRATE * 52)
+
+#Calculate Class 4 contributions
+#Class 4 payable if your profits are > CLASS4NITHRESHOLD per year
+#Class 4 = 9% on profits between £8,164 and £45,000 and 2% on profits over £45,000
+if preTaxProfits > CLASS4NITHRESHOLD and preTaxProfits < CLASS4SSECONDRATETHRESHOLD :
+    class4NI = (preTaxProfits * CLASS4FIRSTRATE) #calculates first rate of class 4
+
+#Calculate remaining NI using second rate.
+if preTaxProfits > CLASS4NITHRESHOLD :
+    class4NI = class4NI + ((preTaxProfits - CLASS4SSECONDRATETHRESHOLD) * CLASS4SECONDRATE)
+
+#Total NI contribution
+niPayable = (class2NI + class4NI) #total of class 2 and 4 NI contributions based on users pre-tax profits
 
 #Calculate take home pay
-netIncome = (grossIncome - taxPayable)
-
-#
-# SECTION NEEDS FINISHING
-#
+netIncome = (grossIncome - taxPayable) + (grossIncome - niPayable)
 
 #Print out tax and NI contributions and the take home pay to the user
 print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
