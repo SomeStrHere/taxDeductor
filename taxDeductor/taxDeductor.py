@@ -27,6 +27,11 @@ TAXBAND3PERCENT = 0.45 #The value as a percentage which will be used to calc tax
 grossIncome = 0.00
 businessCosts = 0.00
 preTaxProfits = 0.00
+#This is the "take home pay" value to be returned to the user after all tax and NI contributions
+#have been deducted. 
+netIncome = 0.00
+niPayable = 0.00 #total of all National Insurance contributions to be paid, calculated based on 
+#user  input and constants.
 
 #NI contributions variables and constants
 #see; https://www.gov.uk/self-employed-national-insurance-rates
@@ -90,5 +95,15 @@ else :
 #Calculate NI based on user input
 
 #Calculate take home pay
+netIncome = (grossIncome - taxPayable)
+
+#
+# SECTION NEEDS FINISHING
+#
 
 #Print out tax and NI contributions and the take home pay to the user
+print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
+print('Total tax: £%.2f' %(taxPayable))
+print('Total NI: £%.2f' %(niPayable))
+print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
+\n£%.2f\n' %(netIncome))
