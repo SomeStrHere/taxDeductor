@@ -1,9 +1,9 @@
 #Program to take in input from the user and calculate how much tax and NI contributions a 
 #self employed user would have to pay for that years, based on the users input.
 #
-#Version 1.1.1
+#Version 1.1.2
 #Versioning: a.b.c
-#a = major change, b = smaller change, c = minor changes (bug fixes)
+#a = major change, b = smaller change, c = minor changes (bug fixes, etc)
 
 #import required libraries
 import sys
@@ -122,10 +122,11 @@ def yearlyPreTax() : #function for user to input total pre-tax income for the ye
         yearlyPreTax()
 
     print('\nThank you...')
+    clearConsole(5)
 
     calculateTax()
     calculateNI()
-    #programOutput(taxPayable, niPayable, netIncome)
+    programOutput(taxPayable, niPayable, netIncome)
 
 def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     """Prompts the user to enter their pre-tax income for each month of the year.\
@@ -155,11 +156,12 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     #The array is used to increase the functionality of later versions of the program.
 
     print('\nThank you...')
+    clearConsole(6)
     #print(preTaxMonthlyArrayTotal) #Uncomment to test the contents of the array
 
     calculateTax()
     calculateNI()
-    #programOutput(taxPayable, niPayable, netIncome)
+    programOutput(taxPayable, niPayable, netIncome)
 
 def calculateTax() : 
      """Calculates the total tax due to be paid by user (taxPayable)."""
@@ -227,7 +229,9 @@ def takeHomePay() : #Calculate take home pay
    """Calculates the users take home pay after deducing tax and NI contributions, returns\
    (netIncome)."""
    
-   netIncome = (grossIncome - taxPayable) + (grossIncome - niPayable)
+   #taxPayable returned from calculateTax()
+   #niPayable returned from calculateNI()
+   netIncome = (grossIncome - calculateTax()) + (grossIncome - calculateNI())
 
    return(netIncome)
 
