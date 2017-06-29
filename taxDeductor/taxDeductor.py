@@ -1,7 +1,9 @@
 #Program to take in input from the user and calculate how much tax and NI contributions a 
 #self employed user would have to pay for that years, based on the users input.
 #
-#Version 0.2.0 - Improved version of program with functions and menu system.
+#Version 1.1.0
+#Versioning: a.b.c
+#a = major change, b = smaller change, c = minor changes (bug fixes)
 
 #import required libraries
 import sys
