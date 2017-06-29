@@ -1,7 +1,7 @@
 #Program to take in input from the user and calculate how much tax and NI contributions a 
 #self employed user would have to pay for that years, based on the users input.
 #
-#Version 1.1.0
+#Version 1.1.1
 #Versioning: a.b.c
 #a = major change, b = smaller change, c = minor changes (bug fixes)
 
@@ -124,7 +124,7 @@ def yearlyPreTax() : #function for user to input total pre-tax income for the ye
     print('\nThank you...')
 
     calculateTax()
-    #calculateNI()
+    calculateNI()
     #programOutput(taxPayable, niPayable, netIncome)
 
 def monthlyPreTax() : #function for user to input monthly pre-tax income figures
@@ -158,7 +158,7 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     #print(preTaxMonthlyArrayTotal) #Uncomment to test the contents of the array
 
     calculateTax()
-    #calculateNI()
+    calculateNI()
     #programOutput(taxPayable, niPayable, netIncome)
 
 def calculateTax() : 
@@ -199,10 +199,11 @@ def calculateNI() : #Calculatte Class 2 contributions
    global CLASS2NITHRESHOLD
    global CLASS2NIRATE
    global CLASS4NITHRESHOLD
-   global preTaxProfits
    global CLASS4SSECONDRATETHRESHOLD
    global CLASS4FIRSTRATE
    global CLASS4SECONDRATE
+   global class2NI
+   global class4NI
 
    preTaxProfits = (grossIncome - businessCosts)
 
