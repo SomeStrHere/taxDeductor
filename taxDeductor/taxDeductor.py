@@ -62,6 +62,7 @@ def menu() : #declare the menu function
 
     if not re.match("^[1-5]*$", menuChoice) or (int(menuChoice) > 5):
         print("Error! Only numbers 1-5 are allowed.")
+        clearConsole(3)
         menu()
     else :
         if menuChoice == "1" :
@@ -118,7 +119,7 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     return(preTaxMonthlyArrayTotal) #returns the sum of the contents of the array
     #The array is used to increase the functionality of later versions of the program.
 
-def calculateTax() :  
+def calculateTax() :
 
     if grossIncome >= TAXBAND3MIN :
         taxPayable = (grossIncome - totalTaxAllowance ) * TAXBAND3PERCENT
@@ -128,7 +129,7 @@ def calculateTax() :
        taxPayable = (grossIncome - totalTaxAllowance) * TAXBAND1PERCENT
     else :
         taxPayable = 0.00
-         
+
     return(taxPayable)
 
 def declareBusinessCosts() : #Take in business costs value from user
@@ -157,7 +158,7 @@ def calculateNI() : #Calculatte Class 2 contributions
 
     return(niPayable)
 
-def takeHomePay : #Calculate take home pay
+def takeHomePay() : #Calculate take home pay
    
    netIncome = (grossIncome - taxPayable) + (grossIncome - niPayable)
 
@@ -170,5 +171,17 @@ def programOutput() : #print output to the user
     print('Total NI: £%.2f' %(niPayable))
     print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
 \n£%.2f\n' %(netIncome))
+
+def clearConsole(wait) : #function to clear console on Linux or Windows
+
+    import time
+    time.sleep(wait) # produces a delay based on the argument given to clearConsole()
+    
+    import os
+
+    try :
+        os.system('cls') #clears console on Windows
+    except :
+        os.system('clear') #clears console on Linux
 
 menu() #call the menu function
