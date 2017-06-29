@@ -56,10 +56,10 @@ def menu() : #declare the menu function
     print('\nMenu')
     print('------')
     print('Please enter a number to choose from the following menu options.\n')
-    print('(1) To declare any additions to your "Personal Standard Allowance".')
-    print('(2) To enter your total pre-tax income for the year.')
-    print('(3) To enter your pre-tax income for each individual month.')
-    print('(4) To declare any business costs; for NI insurance calculations.')
+    print('(1) Declare an addition to your "Personal Standard Allowance".')
+    print('(2) Declare business costs; for NI insurance calculations.')
+    print('(3) Calculate tax and NI deductions based on monthly values.')
+    print('(4) Calculate tax and NI deductions based on yearly value.')
     print('(5) Exit program.\n')
     menuChoice = input() #obtain input from the user
 
@@ -72,35 +72,58 @@ def menu() : #declare the menu function
             additionalTaxAllowance()
 
         if menuChoice == "2" :
-            yearlyPreTax()
+            declareBusinessCosts()
 
         if menuChoice == "3" :
             monthlyPreTax()
 
         if menuChoice == "4" :
-            declareBusinessCosts()
+            yearlyPreTax()                        
 
         if menuChoice == "5" :
             sys.exit()
 
 def additionalTaxAllowance() : #function to increase users personal tax free allowance
-    """Ask's the user to enter how much additional tax free allowance they wish to declare\
-    and returns (taxAdditionalAllowance)"""
+    """Ask's the user to enter how much additional tax free allowance they wish to declare."""
 
-    taxAdditionalAllowance = float(input('\nPlease enter the total in value, which you want to add\
-to your tax free allowance; £')) 
+    try :
+        taxAdditionalAllowance = float(input('\nHow much do you want to add\
+ to your tax free allowance?\n\n£'))
+    except :
+        print('Sorry, there was an error... please try again.')
+        additionalTaxAllowance()
 
-    return(taxAdditionalAllowance)
+    clearConsole(0)
+    print('\nOperation complete')
+    print('Returning you to the menu...')
+    menu()
+
+def declareBusinessCosts() : #Take in business costs value from user
+   """Asks the user to enter the total costs of business costs they wish to declare.."""
+
+   try :
+       businessCosts = float(input("\nWhat is the total cost of the business costs you wish to declare?\n\n£"))
+   except :
+       print('Sorry, there was an error... please try again.')
+       declareBusinessCosts()
+
+   clearConsole(0)
+   print('\nOperation complete')
+   print('Returning you to the menu...')
+   menu()
 
 def yearlyPreTax() : #function for user to input total pre-tax income for the year
     """Asks the user to enter their total pre-tax income for the year, returns (yearlyPreTax)."""
 
     try :
-        grossIncome = float(input('\nPlease enter your annual pre tax income £'))
+        grossIncome = float(input('\nPlease enter your annual pre-tax income £'))
     except :
         print('Sorry, there was an error')
 
-    return(yearlyPreTax)
+    calculateTax()
+    declareBusinessCosts()
+    calculateNI()
+    programOutput(taxPayable, niPayable, netIncome)
 
 def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     """Prompts the user to enter their pre-tax income for each month of the year.\
@@ -113,7 +136,7 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
         #adds that value to the array preTaxMonthlyIncome[]
         monthlyIncomeContainer = 0
         try :
-            monthlyIncomeContainer = float(input('Please enter your pre-tx income for each month; one at a time: '))
+            monthlyIncomeContainer = float(input('Please enter your pre-tax income for each month, and press enter:\n\n£'))
         except :
             print('Sorry, there was an error')
             break # break is here to exit the loop in the case of an error
@@ -124,8 +147,13 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     for i in range(len(preTaxMonthlyIncome)):
         preTaxMonthlyArrayTotal += preTaxMonthlyIncome[i]
 
-    return(preTaxMonthlyArrayTotal) #returns the sum of the contents of the array
+    #return(preTaxMonthlyArrayTotal) #returns the sum of the contents of the array
     #The array is used to increase the functionality of later versions of the program.
+
+    calculateTax()
+    declareBusinessCosts()
+    calculateNI()
+    programOutput(taxPayable, niPayable, netIncome)
 
 def calculateTax() : 
      """Calculates the total tax due to be paid by user (taxPayable)."""
@@ -140,14 +168,6 @@ def calculateTax() :
          taxPayable = 0.00
 
      return(taxPayable)
-
-def declareBusinessCosts() : #Take in business costs value from user
-   """Asks the user to enter the total costs of business costs they wish to declare, returns\
-   (businessCostss)."""
-
-   businessCosts = float(input("\nWhat is the total cost of the business costs you wish to declare?\n\n£"))
-
-   return(businessCosts)
 
 def calculateNI() : #Calculatte Class 2 contributions
    """Calculates the total NI contributions to be paid, returns (niPayable)."""
@@ -178,7 +198,7 @@ def takeHomePay() : #Calculate take home pay
 
    return(netIncome)
 
-def programOutput() : #print output to the user
+def programOutput(taxPayable, niPayable, netIncome) : #print output to the user
    """Prints information to the screen."""
 
    print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
