@@ -46,6 +46,7 @@ CLASS4SSECONDRATETHRESHOLD = 45000.01
 CLASS4SECONDRATE = 0.02 #The value as a percentage which will be used to cal class contributions on pre-tax profits above CLASS4SSECONDRATETHRESHOLD
 
 def menu() : #declare the menu function
+    """Displays a menu and accepts user input."""
     print('\nTax & NI Deductor')
     print('##################')
     print('A program to calculate the tax and NI contributions per year, for a \nself employed person\
@@ -81,6 +82,8 @@ def menu() : #declare the menu function
             sys.exit()
 
 def additionalTaxAllowance() : #function to increase users personal tax free allowance
+    """Ask's the user to enter how much additional tax free allowance they wish to declare\
+    and returns (taxAdditionalAllowance)"""
 
     taxAdditionalAllowance = float(input('\nPlease enter the total in value, which you want to add\
 to your tax free allowance; £')) 
@@ -88,6 +91,7 @@ to your tax free allowance; £'))
     return(taxAdditionalAllowance)
 
 def yearlyPreTax() : #function for user to input total pre-tax income for the year
+    """Asks the user to enter their total pre-tax income for the year, returns (yearlyPreTax)."""
 
     try :
         grossIncome = float(input('\nPlease enter your annual pre tax income £'))
@@ -97,6 +101,8 @@ def yearlyPreTax() : #function for user to input total pre-tax income for the ye
     return(yearlyPreTax)
 
 def monthlyPreTax() : #function for user to input monthly pre-tax income figures
+    """Prompts the user to enter their pre-tax income for each month of the year.\
+    User input is stored in array preTaxMonthlyIncome[] with a range of 0-12."""
 
     preTaxMonthlyIncome = []
     print('') #To create a line of empty space before the loop
@@ -119,69 +125,79 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     return(preTaxMonthlyArrayTotal) #returns the sum of the contents of the array
     #The array is used to increase the functionality of later versions of the program.
 
-def calculateTax() :
+def calculateTax() : 
+     """Calculates the total tax due to be paid by user (taxPayable)."""
 
-    if grossIncome >= TAXBAND3MIN :
-        taxPayable = (grossIncome - totalTaxAllowance ) * TAXBAND3PERCENT
-    elif grossIncome >= TAXBAND2MIN and grossIncome <= TAXBAND2MAX :
-      taxPayable = (grossIncome - totalTaxAllowance)  * TAXBAND2PERCENT
-    elif grossIncome >= TAXBAND1MIN and grossIncome <= TAXBAND1MAX :
-       taxPayable = (grossIncome - totalTaxAllowance) * TAXBAND1PERCENT
-    else :
-        taxPayable = 0.00
+     if grossIncome >= TAXBAND3MIN :
+         taxPayable = (grossIncome - totalTaxAllowance ) * TAXBAND3PERCENT
+     elif grossIncome >= TAXBAND2MIN and grossIncome <= TAXBAND2MAX :
+         taxPayable = (grossIncome - totalTaxAllowance)  * TAXBAND2PERCENT
+     elif grossIncome >= TAXBAND1MIN and grossIncome <= TAXBAND1MAX :
+         taxPayable = (grossIncome - totalTaxAllowance) * TAXBAND1PERCENT
+     else :
+         taxPayable = 0.00
 
-    return(taxPayable)
+     return(taxPayable)
 
 def declareBusinessCosts() : #Take in business costs value from user
+   """Asks the user to enter the total costs of business costs they wish to declare, returns\
+   (businessCostss)."""
 
-    businessCosts = float(input("\nWhat is the total cost of the business costs you wish to declare?\n\n£"))
+   businessCosts = float(input("\nWhat is the total cost of the business costs you wish to declare?\n\n£"))
 
-    return(businessCosts)
+   return(businessCosts)
 
 def calculateNI() : #Calculatte Class 2 contributions
+   """Calculates the total NI contributions to be paid, returns (niPayable)."""
     
-    preTaxProfits = (grossIncome - businessCosts)
+   preTaxProfits = (grossIncome - businessCosts)
 
-    if preTaxProfits > CLASS2NITHRESHOLD :
+   if preTaxProfits > CLASS2NITHRESHOLD :
         class2NI = (CLASS2NIRATE * 52)
 
-    #Calculate Class 4 contributions using first rate
-    if preTaxProfits > CLASS4NITHRESHOLD and preTaxProfits < CLASS4SSECONDRATETHRESHOLD :
+   #Calculate Class 4 contributions using first rate
+   if preTaxProfits > CLASS4NITHRESHOLD and preTaxProfits < CLASS4SSECONDRATETHRESHOLD :
         class4NI = (preTaxProfits * CLASS4FIRSTRATE) #calculates first rate of class 4
 
-    #Calculate remaining Class 4 using second rate
-    if preTaxProfits > CLASS4NITHRESHOLD :
+   #Calculate remaining Class 4 using second rate
+   if preTaxProfits > CLASS4NITHRESHOLD :
         class4NI = class4NI + ((preTaxProfits - CLASS4SSECONDRATETHRESHOLD) * CLASS4SECONDRATE)
 
-    #Total NI contribution
-    niPayable = (class2NI + class4NI)
+   #Total NI contribution
+   niPayable = (class2NI + class4NI)
 
-    return(niPayable)
+   return(niPayable)
 
 def takeHomePay() : #Calculate take home pay
+   """Calculates the users take home pay after deducing tax and NI contributions, returns\
+   (netIncome)."""
    
    netIncome = (grossIncome - taxPayable) + (grossIncome - niPayable)
 
    return(netIncome)
 
 def programOutput() : #print output to the user
+   """Prints information to the screen."""
 
-    print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
-    print('Total tax: £%.2f' %(taxPayable))
-    print('Total NI: £%.2f' %(niPayable))
-    print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
+   print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
+   print('Total tax: £%.2f' %(taxPayable))
+   print('Total NI: £%.2f' %(niPayable))
+   print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
 \n£%.2f\n' %(netIncome))
 
 def clearConsole(wait) : #function to clear console on Linux or Windows
+   """Accepts an integer argument and produces a delay for the number of seconds passed as an argument\
+    the program will then attempt to clear the console for Windows, and if that fails will try to clear\
+     the console for Linux."""
 
-    import time
-    time.sleep(wait) # produces a delay based on the argument given to clearConsole()
+   import time
+   time.sleep(wait) # produces a delay based on the argument given to clearConsole()
     
-    import os
+   import os
 
-    try :
-        os.system('cls') #clears console on Windows
-    except :
-        os.system('clear') #clears console on Linux
-
+   try :
+       os.system('cls') #clears console on Windows
+   except :
+       os.system('clear') #clears console on Linux
+       
 menu() #call the menu function
