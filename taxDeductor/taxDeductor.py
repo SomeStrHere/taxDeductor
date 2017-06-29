@@ -123,7 +123,7 @@ def yearlyPreTax() : #function for user to input total pre-tax income for the ye
 
     print('\nThank you...')
 
-    #calculateTax()
+    calculateTax()
     #calculateNI()
     #programOutput(taxPayable, niPayable, netIncome)
 
@@ -157,12 +157,26 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     print('\nThank you...')
     #print(preTaxMonthlyArrayTotal) #Uncomment to test the contents of the array
 
-    #calculateTax()
+    calculateTax()
     #calculateNI()
     #programOutput(taxPayable, niPayable, netIncome)
 
 def calculateTax() : 
      """Calculates the total tax due to be paid by user (taxPayable)."""
+
+     global TAXBAND3MIN
+     global TAXBAND2MIN
+     global TAXBAND1MIN
+
+     global TAXBAND3PERCENT
+     global TAXBAND2PERCENT
+     global TAXBAND1PERCENT
+
+     global TAXBAND2MAX
+     global TAXBAND1MAX
+
+     global grossIncome
+     global totalTaxAllowance
 
      if grossIncome >= TAXBAND3MIN :
          taxPayable = (grossIncome - totalTaxAllowance ) * TAXBAND3PERCENT
@@ -178,6 +192,18 @@ def calculateTax() :
 def calculateNI() : #Calculatte Class 2 contributions
    """Calculates the total NI contributions to be paid, returns (niPayable)."""
     
+   global grossIncome
+   global businessCosts
+   global preTaxProfits
+
+   global CLASS2NITHRESHOLD
+   global CLASS2NIRATE
+   global CLASS4NITHRESHOLD
+   global preTaxProfits
+   global CLASS4SSECONDRATETHRESHOLD
+   global CLASS4FIRSTRATE
+   global CLASS4SECONDRATE
+
    preTaxProfits = (grossIncome - businessCosts)
 
    if preTaxProfits > CLASS2NITHRESHOLD :
