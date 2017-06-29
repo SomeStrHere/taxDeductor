@@ -1,7 +1,11 @@
 #Program to take in input from the user and calculate how much tax and NI contributions a 
 #self employed user would have to pay for that years, based on the users input.
 #
-#This is the first iteration of this program.
+#Version 0.2.0 - Improved version of program with functions and menu system.
+
+#import required libraries
+import sys
+import re
 
 #Initialize variables and CONSTANTS
 TAXPERSONALALLOWANCE = 11500 #The standard personal allowance
@@ -41,32 +45,58 @@ CLASS4FIRSTRATE = 0.09 #The value as a percentage which will be used to calc cla
 CLASS4SSECONDRATETHRESHOLD = 45000.01
 CLASS4SECONDRATE = 0.02 #The value as a percentage which will be used to cal class contributions on pre-tax profits above CLASS4SSECONDRATETHRESHOLD
 
-print('\nTax & NI Deductor')
-print('##################')
-print('A program to calculate the tax and NI contributions per year, for a \nself employed person\
+def menu() : #declare the menu function
+    print('\nTax & NI Deductor')
+    print('##################')
+    print('A program to calculate the tax and NI contributions per year, for a \nself employed person\
  in the UK.')
+    print('\nMenu')
+    print('------')
+    print('Please enter a number to choose from the following menu options.\n')
+    print('(1) To declare any additions to your "Personal Standard Allowance".')
+    print('(2) To enter your total pre-tax income for the year.')
+    print('(3) To enter your pre-tax income for each individual month.')
+    print('(4) To declare any business costs; for NI insurance calculations.')
+    print('(5) Exit program.\n')
+    menuChoice = input() #obtain input from the user
 
-#Start user input
-userInput = input("\nIf you are eligible to increase your tax free allowance,\
-press 'Y',\notherwise press the enter key to continue ").upper()
+    if not re.match("^[1-5]*$", menuChoice) or (int(menuChoice) > 5):
+        print("Error! Only numbers 1-5 are allowed.")
+        menu()
+    else :
+        if menuChoice == "1" :
+            additionalTaxAllowance()
 
-while userInput == "Y" :
-    taxAdditionalAllowanc = float(input('\nPlease enter the total in value, which you want to add\
-to your tax free allowance; £'))
-    break
+        if menuChoice == "2" :
+            yearlyPreTax()
 
-#The purpose of this code block is to allow the user to input either an annual pre-tax earnings
-#figure or to allow the user to enter the amounts for each month. So in future iterations the
-#program can return individual values for each month and do more complex calculations.
-yearlyOrMonthly = input("\nIf you know your total pre-tax income for the year press 'Y', to enter\
- values for each month, please press 'M' ").upper()
+        if menuChoice == "3" :
+            monthlyPreTax()
 
-if yearlyOrMonthly == "Y" :
+        if menuChoice == "4" :
+            declareBusinessCosts()
+
+        if menuChoice == "5" :
+            sys.exit()
+
+def additionalTaxAllowance() : #function to increase users personal tax free allowance
+
+    taxAdditionalAllowance = float(input('\nPlease enter the total in value, which you want to add\
+to your tax free allowance; £')) 
+
+    return(taxAdditionalAllowance)
+
+def yearlyPreTax() : #function for user to input total pre-tax income for the year
+
     try :
         grossIncome = float(input('\nPlease enter your annual pre tax income £'))
     except :
         print('Sorry, there was an error')
-elif yearlyOrMonthly == "M" :
+
+    return(yearlyPreTax)
+
+def monthlyPreTax() : #function for user to input monthly pre-tax income figures
+
     preTaxMonthlyIncome = []
     print('') #To create a line of empty space before the loop
     for x in range(0,12):
@@ -84,46 +114,61 @@ elif yearlyOrMonthly == "M" :
     preTaxMonthlyArrayTotal = 0.0 
     for i in range(len(preTaxMonthlyIncome)):
         preTaxMonthlyArrayTotal += preTaxMonthlyIncome[i]
-else :
-    yearlyOrMonthly = input("Error; please enter 'Y' or 'M'...")
 
-#Calculate tax payable
-if grossIncome >= TAXBAND3MIN :
-    taxPayable = (grossIncome - totalTaxAllowance ) * TAXBAND3PERCENT
-elif grossIncome >= TAXBAND2MIN and grossIncome <= TAXBAND2MAX :
-    taxPayable = (grossIncome - totalTaxAllowance)  * TAXBAND2PERCENT
-elif grossIncome >= TAXBAND1MIN and grossIncome <= TAXBAND1MAX :
-    taxPayable = (grossIncome - totalTaxAllowance) * TAXBAND1PERCENT
-else :
-    taxPayable = 0.00
+    return(preTaxMonthlyArrayTotal) #returns the sum of the contents of the array
+    #The array is used to increase the functionality of later versions of the program.
 
-#Calculate NI based on user input
-businessCosts = float(input("\nIf you need to declare any business costs/expenses for us to calculate your\
- NI contributions, please do so here.\nIf you don't have anything to declare just enter 0:\n\n£"))
+def calculateTax() :  
 
-preTaxProfits = (grossIncome - businessCosts)
+    if grossIncome >= TAXBAND3MIN :
+        taxPayable = (grossIncome - totalTaxAllowance ) * TAXBAND3PERCENT
+    elif grossIncome >= TAXBAND2MIN and grossIncome <= TAXBAND2MAX :
+      taxPayable = (grossIncome - totalTaxAllowance)  * TAXBAND2PERCENT
+    elif grossIncome >= TAXBAND1MIN and grossIncome <= TAXBAND1MAX :
+       taxPayable = (grossIncome - totalTaxAllowance) * TAXBAND1PERCENT
+    else :
+        taxPayable = 0.00
+         
+    return(taxPayable)
 
-#Calculatte Class 2 contributions
-if preTaxProfits > CLASS2NITHRESHOLD :
-    class2NI = (CLASS2NIRATE * 52)
+def declareBusinessCosts() : #Take in business costs value from user
 
-#Calculate Class 4 contributions using first rate
-if preTaxProfits > CLASS4NITHRESHOLD and preTaxProfits < CLASS4SSECONDRATETHRESHOLD :
-    class4NI = (preTaxProfits * CLASS4FIRSTRATE) #calculates first rate of class 4
+    businessCosts = float(input("\nWhat is the total cost of the business costs you wish to declare?\n\n£"))
 
-#Calculate remaining Class 4 using second rate
-if preTaxProfits > CLASS4NITHRESHOLD :
-    class4NI = class4NI + ((preTaxProfits - CLASS4SSECONDRATETHRESHOLD) * CLASS4SECONDRATE)
+    return(businessCosts)
 
-#Total NI contribution
-niPayable = (class2NI + class4NI)
+def calculateNI() : #Calculatte Class 2 contributions
+    
+    preTaxProfits = (grossIncome - businessCosts)
 
-#Calculate take home pay
-netIncome = (grossIncome - taxPayable) + (grossIncome - niPayable)
+    if preTaxProfits > CLASS2NITHRESHOLD :
+        class2NI = (CLASS2NIRATE * 52)
 
-#Print output to user
-print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
-print('Total tax: £%.2f' %(taxPayable))
-print('Total NI: £%.2f' %(niPayable))
-print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
+    #Calculate Class 4 contributions using first rate
+    if preTaxProfits > CLASS4NITHRESHOLD and preTaxProfits < CLASS4SSECONDRATETHRESHOLD :
+        class4NI = (preTaxProfits * CLASS4FIRSTRATE) #calculates first rate of class 4
+
+    #Calculate remaining Class 4 using second rate
+    if preTaxProfits > CLASS4NITHRESHOLD :
+        class4NI = class4NI + ((preTaxProfits - CLASS4SSECONDRATETHRESHOLD) * CLASS4SECONDRATE)
+
+    #Total NI contribution
+    niPayable = (class2NI + class4NI)
+
+    return(niPayable)
+
+def takeHomePay : #Calculate take home pay
+   
+   netIncome = (grossIncome - taxPayable) + (grossIncome - niPayable)
+
+   return(netIncome)
+
+def programOutput() : #print output to the user
+
+    print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
+    print('Total tax: £%.2f' %(taxPayable))
+    print('Total NI: £%.2f' %(niPayable))
+    print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
 \n£%.2f\n' %(netIncome))
+
+menu() #call the menu function
