@@ -113,17 +113,19 @@ def declareBusinessCosts() : #Take in business costs value from user
    menu()
 
 def yearlyPreTax() : #function for user to input total pre-tax income for the year
-    """Asks the user to enter their total pre-tax income for the year, returns (yearlyPreTax)."""
+    """Asks the user to enter their total pre-tax income for the year."""
 
     try :
-        grossIncome = float(input('\nPlease enter your annual pre-tax income £'))
+        grossIncome = float(input('\nWhat was your pre-tax income for the year?\n\n£'))
     except :
-        print('Sorry, there was an error')
+        print('Sorry, there was an error... please try again.')
+        yearlyPreTax()
 
-    calculateTax()
-    declareBusinessCosts()
-    calculateNI()
-    programOutput(taxPayable, niPayable, netIncome)
+    print('\nThank you...')
+
+    #calculateTax()
+    #calculateNI()
+    #programOutput(taxPayable, niPayable, netIncome)
 
 def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     """Prompts the user to enter their pre-tax income for each month of the year.\
@@ -133,9 +135,9 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     print('') #To create a line of empty space before the loop
 
     monthlyIncomeContainer = 0
-    monthlyIncomeContainer = float(input('Please enter your pre-tax income for each month, and press enter:\n\n£'))
+    print('Please enter your pre-tax income for each month, and press enter:\n')
 
-    for x in range(0,11):
+    for x in range(0,12):
 
         try :
             monthlyIncomeContainer = float(input('£'))
@@ -145,29 +147,19 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
 
         preTaxMonthlyIncome.append(monthlyIncomeContainer)
 
-#    for x in range(0,12):
-        #monthlyIncomeContainer stores the user input and each time through the loop
-        #adds that value to the array preTaxMonthlyIncome[]
-        #monthlyIncomeContainer = 0
-        #try :
-        #    monthlyIncomeContainer = float(input('\nPlease enter your pre-tax income for each month, and press enter:\n\n£'))
-       # except :
-           # print('Sorry, there was an error')
-            #break # break is here to exit the loop in the case of an error
-        #preTaxMonthlyIncome.append(monthlyIncomeContainer)
-
     #Following code creates a total for all the values in the above array
         preTaxMonthlyArrayTotal = 0.0 
     for i in range(len(preTaxMonthlyIncome)):
         preTaxMonthlyArrayTotal += preTaxMonthlyIncome[i]
 
-    #return(preTaxMonthlyArrayTotal) #returns the sum of the contents of the array
     #The array is used to increase the functionality of later versions of the program.
 
-    calculateTax()
-    declareBusinessCosts()
-    calculateNI()
-    programOutput(taxPayable, niPayable, netIncome)
+    print('\nThank you...')
+    #print(preTaxMonthlyArrayTotal) #Uncomment to test the contents of the array
+
+    #calculateTax()
+    #calculateNI()
+    #programOutput(taxPayable, niPayable, netIncome)
 
 def calculateTax() : 
      """Calculates the total tax due to be paid by user (taxPayable)."""
