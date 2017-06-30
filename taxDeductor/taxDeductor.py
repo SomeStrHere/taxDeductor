@@ -245,7 +245,8 @@ def takeHomePay() : #Calculate take home pay
 
    #taxPayable returned from calculateTax()
    #niPayable returned from calculateNI()
-   netIncome = (grossIncome - calculateTax()) + (grossIncome - calculateNI())
+   #netIncome = (grossIncome - calculateTax()) + (grossIncome - calculateNI()) #initial attempt, bug
+   netIncome = grossIncome - (calculateTax() + calculateNI())
 
    return(netIncome)
 
