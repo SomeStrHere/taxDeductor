@@ -1,7 +1,7 @@
 #Program to take in input from the user and calculate how much tax and NI contributions a 
 #self employed user would have to pay for that years, based on the users input.
 #
-#Version 1.1.2
+#Version 1.1.3
 #Versioning: a.b.c
 #a = major change, b = smaller change, c = minor changes (bug fixes, etc)
 
@@ -273,5 +273,14 @@ def programOutput(taxPayable, niPayable, netIncome) : #print output to the user
    print('Total NI: £%.2f' %(niPayable))
    print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
 \n£%.2f\n' %(netIncome))
+
+   returnToMenu = input('Press "M" to return to the menu, or "X" to exit.').upper()
+
+   if returnToMenu == "M" :
+       clearConsole(0)
+       menu()
+
+   if returnToMenu == "X" :
+       sys.exit()
        
 menu() #call the menu function
