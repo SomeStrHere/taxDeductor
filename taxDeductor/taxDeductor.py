@@ -86,6 +86,8 @@ def menu() : #declare the menu function
 def additionalTaxAllowance() : #function to increase users personal tax free allowance
     """Ask's the user to enter how much additional tax free allowance they wish to declare."""
 
+    global taxAdditionalAllowance
+
     try :
         taxAdditionalAllowance = float(input('\nHow much do you want to add\
  to your tax free allowance?\n\n£'))
@@ -114,6 +116,8 @@ def declareBusinessCosts() : #Take in business costs value from user
 
 def yearlyPreTax() : #function for user to input total pre-tax income for the year
     """Asks the user to enter their total pre-tax income for the year."""
+    
+    global grossIncome
 
     try :
         grossIncome = float(input('\nWhat was your pre-tax income for the year?\n\n£'))
@@ -122,11 +126,14 @@ def yearlyPreTax() : #function for user to input total pre-tax income for the ye
         yearlyPreTax()
 
     print('\nThank you...')
-    clearConsole(5)
+    clearConsole(3)
 
     calculateTax()
     calculateNI()
-    programOutput(taxPayable, niPayable, netIncome)
+    #netIncome returned by takeHomePay()
+    #taxPayable returned by calculateTax()
+    #niPayable returned by calculateNI()
+    programOutput(calculateTax(), calculateNI(), takeHomePay())
 
 def monthlyPreTax() : #function for user to input monthly pre-tax income figures
     """Prompts the user to enter their pre-tax income for each month of the year.\
@@ -155,13 +162,20 @@ def monthlyPreTax() : #function for user to input monthly pre-tax income figures
 
     #The array is used to increase the functionality of later versions of the program.
 
+    global grossIncome
+
+    grossIncome = preTaxMonthlyArrayTotal
+
     print('\nThank you...')
-    clearConsole(6)
+    clearConsole(3)
     #print(preTaxMonthlyArrayTotal) #Uncomment to test the contents of the array
 
     calculateTax()
     calculateNI()
-    programOutput(taxPayable, niPayable, netIncome)
+    #netIncome returned by takeHomePay()
+    #taxPayable returned by calculateTax()
+    #niPayable returned by calculateNI()
+    programOutput(calculateTax(), calculateNI(), takeHomePay())
 
 def calculateTax() : 
      """Calculates the total tax due to be paid by user (taxPayable)."""
@@ -228,21 +242,12 @@ def calculateNI() : #Calculatte Class 2 contributions
 def takeHomePay() : #Calculate take home pay
    """Calculates the users take home pay after deducing tax and NI contributions, returns\
    (netIncome)."""
-   
+
    #taxPayable returned from calculateTax()
    #niPayable returned from calculateNI()
    netIncome = (grossIncome - calculateTax()) + (grossIncome - calculateNI())
 
    return(netIncome)
-
-def programOutput(taxPayable, niPayable, netIncome) : #print output to the user
-   """Prints information to the screen."""
-
-   print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
-   print('Total tax: £%.2f' %(taxPayable))
-   print('Total NI: £%.2f' %(niPayable))
-   print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
-\n£%.2f\n' %(netIncome))
 
 def clearConsole(wait) : #function to clear console on Linux or Windows
    """Accepts an integer argument and produces a delay for the number of seconds passed as an argument\
@@ -258,5 +263,14 @@ def clearConsole(wait) : #function to clear console on Linux or Windows
        os.system('cls') #clears console on Windows
    except :
        os.system('clear') #clears console on Linux
+
+def programOutput(taxPayable, niPayable, netIncome) : #print output to the user
+   """Prints information to the screen."""
+
+   print('\nDetails of your "take home pay", net income, will be shown bellow: \n')
+   print('Total tax: £%.2f' %(taxPayable))
+   print('Total NI: £%.2f' %(niPayable))
+   print('\nYour "take home pay" after deducting tax and NI contributions will be:\n\
+\n£%.2f\n' %(netIncome))
        
 menu() #call the menu function
